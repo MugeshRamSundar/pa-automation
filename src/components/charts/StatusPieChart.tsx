@@ -10,7 +10,28 @@ interface StatusPieChartProps {
   }[];
 }
 
+// Add this type definition
+interface PieLabelProps {
+  cx?: number;
+  cy?: number;
+  midAngle?: number;
+  innerRadius?: number;
+  outerRadius?: number;
+  percent?: number;
+  index?: number;
+  name?: string;
+  value?: number;
+}
+
 export function StatusPieChart({ data }: StatusPieChartProps) {
+  // Custom label function with proper typing
+  const renderLabel = ({ name, percent }: PieLabelProps) => {
+    if (typeof percent === 'number') {
+      return `${name}: ${(percent * 100).toFixed(0)}%`;
+    }
+    return name || '';
+  };
+
   return (
     <div className="h-[300px]">
       <ResponsiveContainer width="100%" height="100%">
@@ -20,7 +41,7 @@ export function StatusPieChart({ data }: StatusPieChartProps) {
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+            // label={renderLabel}
             outerRadius={80}
             fill="#8884d8"
             dataKey="value"
